@@ -78,7 +78,7 @@ def create_json(party_dict:dict, all_dict = dict()) -> (None):
         os.chdir(os.getcwd() + "/datasets")
 
     try:
-        with open("subjects.json", encoding='utf-8') as old_file:
+        with open("subjects.json", "r", encoding='utf-8') as old_file:
             all_dict = json.load(old_file)
     except:
         pass
