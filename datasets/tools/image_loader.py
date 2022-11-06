@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 from requests import get
 from bs4 import BeautifulSoup
@@ -35,14 +36,27 @@ def photo_search(url:str) -> (str):
     Returns:
         img_url (str): URL адрес изображения
     '''
-    page = BeautifulSoup(get(url).content, "html.parser")
-    img_zone = page.find("tbody").find("td", class_="infobox-image")
+    try:
+        page = BeautifulSoup(get(url, headers={'User-Agent': 'PseudoBot/1.0 (pseudo.developer.ru@gmail.com) bot'}).content, "html.parser")
+    except:
+        print("! INTERRUPT !\n! Too Many Requests !")
+        time.sleep(60)
+        page = BeautifulSoup(get(url, headers={'User-Agent': 'PseudoBot/1.0 (pseudo.developer.ru@gmail.com) bot'}).content, "html.parser")
+
+    img_zone = page.find("tbody")
+    if img_zone == None:
+        return None
+    else:
+        img_zone = img_zone.find("td", class_="infobox-image")
 
     if img_zone == None:
         return None
     else:
         img = img_zone.find("img", src=True)
-        img_url = "https:" + img["src"]
+        if img == None:
+            return None
+        else:
+            img_url = "https:" + img["src"]
 
         return img_url
 
@@ -69,5 +83,8 @@ def photo_install(party_name:str, person_name:str, url:str) -> (None):
 
     img_url = photo_search(url)
     if not img_url == None:
-        urlretrieve(img_url, f'{party_name}/{person_name}.jpg')
+        try:
+            urlretrieve(img_url, f'{party_name}/{person_name}.jpg')
+        except:
+            pass
     return
