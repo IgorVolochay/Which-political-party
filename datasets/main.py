@@ -15,7 +15,7 @@ def pars() -> None:
     }
 
     for party_name in party_catalog:
-        party_list = parser.get_url(party_catalog[party_name])
+        party_list = parser.get_url(party_catalog[party_name], list())
         party_dict = parser.data_organization(party_name, party_list)
         parser.create_json(party_dict)
 

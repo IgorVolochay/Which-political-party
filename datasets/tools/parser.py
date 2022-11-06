@@ -34,6 +34,7 @@ def get_url(url:str, party_list = list()) -> (list):
     Returns:
         party_list (list): список всех членов партии
     '''
+    print(len(party_list))
     page = BeautifulSoup(get(url).content, "html.parser")
     
     lists = page.find("div", class_="mw-category mw-category-columns")
@@ -77,11 +78,9 @@ def create_json(party_dict:dict, all_dict = dict()) -> (None):
     if not "datasets" in os.getcwd():
         os.chdir(os.getcwd() + "/datasets")
 
-    try:
+    if "subjects.json" in os.listdir():
         with open("subjects.json", "r", encoding='utf-8') as old_file:
             all_dict = json.load(old_file)
-    except:
-        pass
 
     all_dict.update(party_dict)
     with open("subjects.json", "w", encoding='utf8') as JSON:
