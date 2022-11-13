@@ -1,9 +1,11 @@
 from tools import parser
 from tools import image_loader
+from tools import descriptor_collector
 
 def main():
-    pars()
-    load_imgs()
+    #pars()
+    #load_imgs()
+    create_dataset()
 
 def pars() -> None:
     party_catalog = {
@@ -27,6 +29,11 @@ def load_imgs() -> None:
             image_loader.photo_install(party_name,
                                        person_name,
                                        party_dict[party_name][person_name])
+
+def create_dataset() -> None:
+    party_list = ["Единая Россия", "ЛДПР", "Новые люди", "Справедливая Россия", "КПРФ"]
+    dataset_dict = descriptor_creation.create_datasets(party_list)
+    descriptor_creation.create_json(dataset_dict)
 
 if __name__ == "__main__":
     main()
